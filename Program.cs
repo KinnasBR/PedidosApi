@@ -32,3 +32,5 @@ app.UseSwaggerUI();
 app.MapPedidoEndpoints();
 
 app.Run();
+
+public partial class Program { }
