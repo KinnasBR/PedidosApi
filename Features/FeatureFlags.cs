@@ -9,4 +9,5 @@ public static class FeatureFlags
 {
     public const string DescontoPremium = "DescontoPremium";
     public const string NovoCalculoFrete = "NovoCalculoFrete";
+    public const string DescontoPremium = "DescontoProgressivo";
 }

@@ -24,6 +24,16 @@ public class DescontoService(IFeatureManager featureManager)
             return 0;
         }
 
+        if (await featureManager.IsEnabledAsync(FeatureFlags.DescontoProgressivo))
+        {
+            return valorPedido switch
+            {
+                >= 500 => valorPedido * 0.20m, // 20% para pedidos grandes
+                >= 200 => valorPedido * 0.12m, // 12% para pedidos médios
+                _      => valorPedido * 0.05m  // 5% para pedidos pequenos
+            };
+        }
+
         // Flag ativa → aplica a nova lógica de desconto
         return clientePremium
             ? valorPedido * 0.15m   // 15% para clientes premium
