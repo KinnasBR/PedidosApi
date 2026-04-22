@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet new xunit *)",
+      "Bash(dotnet add *)",
+      "Bash(dotnet test *)"
+    ]
+  }
+}
