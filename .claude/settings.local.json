@@ -3,7 +3,8 @@
     "allow": [
       "Bash(dotnet new xunit *)",
       "Bash(dotnet add *)",
-      "Bash(dotnet test *)"
+      "Bash(dotnet test *)",
+      "Bash(dotnet build *)"
     ]
   }
 }
