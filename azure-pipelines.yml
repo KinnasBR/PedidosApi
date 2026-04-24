@@ -16,6 +16,7 @@ steps:
   inputs:
     packageType: 'sdk'
     version: '$(dotnetVersion)'
+    includePreviewVersions: true  # ✅ necessário para .NET 10
 
 - task: DotNetCoreCLI@2
   displayName: '2. Restaurar pacotes NuGet'
@@ -42,7 +43,7 @@ steps:
   displayName: '5. Publicar artefato'
   inputs:
     command: 'publish'
-    projects: '**/*.csproj'
+    projects: '**/PedidosApi.csproj'  # ✅ apenas o projeto principal
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-build'
     zipAfterPublish: true
 
