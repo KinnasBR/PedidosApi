@@ -9,6 +9,9 @@
 
   <ItemGroup>
     <Compile Remove="PedidosApi.Tests\**" />
+    <Content Remove="PedidosApi.Tests\**" />
+    <None Remove="PedidosApi.Tests\**" />
+    <EmbeddedResource Remove="PedidosApi.Tests\**" />
   </ItemGroup>
 
   <ItemGroup>
