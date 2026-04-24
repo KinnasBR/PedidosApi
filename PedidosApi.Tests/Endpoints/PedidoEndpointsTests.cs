@@ -69,7 +69,7 @@ public class PedidoEndpointsTests : IClassFixture<WebApplicationFactory<Program>
     [Fact]
     public async Task POST_CalcularDesconto_FlagLigadaClientePremium_Retorna15PorcentoDesconto()
     {
-        var client = CreateClientWithFlags(new() { ["FeatureManagement:DescontoPremium"] = "true" });
+        var client = CreateClientWithFlags(new() { ["FeatureManagement:DescontoPremium"] = "true", ["FeatureManagement:DescontoProgressivo"] = "false" });
         var payload = new { Valor = 1000m, ClientePremium = true };
 
         var resposta = await client.PostAsJsonAsync("/pedidos/calcular-desconto", payload);
@@ -84,7 +84,7 @@ public class PedidoEndpointsTests : IClassFixture<WebApplicationFactory<Program>
     [Fact]
     public async Task POST_CalcularDesconto_FlagLigadaClienteNaoPremium_Retorna5PorcentoDesconto()
     {
-        var client = CreateClientWithFlags(new() { ["FeatureManagement:DescontoPremium"] = "true" });
+        var client = CreateClientWithFlags(new() { ["FeatureManagement:DescontoPremium"] = "true", ["FeatureManagement:DescontoProgressivo"] = "false" });
         var payload = new { Valor = 1000m, ClientePremium = false };
 
         var resposta = await client.PostAsJsonAsync("/pedidos/calcular-desconto", payload);
