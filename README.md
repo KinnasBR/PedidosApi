@@ -18,6 +18,7 @@ API de pedidos desenvolvida com **.NET 10 Minimal API** para demonstrar na prát
 - [Conceitos aplicados](#conceitos-aplicados)
 - [CHANGELOG](#changelog)
 
+
 ---
 
 ## Visão geral
