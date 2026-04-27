@@ -1,7 +1,27 @@
+# ============================================================
+#  PedidosApi — Pipeline CI (Integração Contínua)
+#  Unidade 2 · Aulas 1 a 4
+#
+#  O que este pipeline faz:
+#    1. Instala o .NET 10 SDK no agente
+#    2. Restaura os pacotes NuGet
+#    3. Compila o projeto em modo Release
+#    4. Executa os testes unitários e publica os resultados
+#    5. Publica o artefato (.zip) no Azure Artifacts
+#
+#  Triggers:
+#    - Push na branch master  → roda o CI completo
+#    - Push de tag v*.*.*     → roda o CI completo
+#                               (o CD usa esse artefato)
+# ============================================================
+
 trigger:
   branches:
     include:
       - master
+  tags:
+    include:
+      - 'v*.*.*'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -9,21 +29,28 @@ pool:
 variables:
   buildConfiguration: 'Release'
   dotnetVersion: '10.x'
+  appName: 'pedidosapi'
+
+# ── Steps ────────────────────────────────────────────────────
 
 steps:
+
+# 1. Instalar o .NET SDK na versão correta
 - task: UseDotNet@2
   displayName: '1. Instalar .NET SDK $(dotnetVersion)'
   inputs:
     packageType: 'sdk'
     version: '$(dotnetVersion)'
-    includePreviewVersions: true  # ✅ necessário para .NET 10
 
+# 2. Restaurar pacotes NuGet
 - task: DotNetCoreCLI@2
   displayName: '2. Restaurar pacotes NuGet'
   inputs:
     command: 'restore'
     projects: '**/*.csproj'
 
+# 3. Compilar o projeto
+#    --no-restore: reutiliza os pacotes do step anterior
 - task: DotNetCoreCLI@2
   displayName: '3. Build do projeto'
   inputs:
@@ -31,25 +58,52 @@ steps:
     projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration) --no-restore'
 
+# 4. Executar testes unitários
+#    --no-build: reutiliza o binário do step anterior
+#    --collect: coleta dados de cobertura de código
+#    publishTestResults: exibe resultados na aba Tests do DevOps
 - task: DotNetCoreCLI@2
   displayName: '4. Executar testes unitários'
   inputs:
     command: 'test'
     projects: '**/*Tests*.csproj'
-    arguments: '--configuration $(buildConfiguration) --no-build --collect:"XPlat Code Coverage"'
+    arguments: >
+      --configuration $(buildConfiguration)
+      --no-build
+      --collect:"XPlat Code Coverage"
     publishTestResults: true
 
+# 5. Publicar a aplicação (.zip pronto para deploy)
+#    --no-build: reutiliza o binário compilado
+#    zipAfterPublish: empacota em .zip para o App Service
 - task: DotNetCoreCLI@2
-  displayName: '5. Publicar artefato'
+  displayName: '5. Publicar aplicação'
   inputs:
     command: 'publish'
-    projects: '**/PedidosApi.csproj'  # ✅ apenas o projeto principal
-    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-build'
+    projects: '**/*.csproj'
+    arguments: >
+      --configuration $(buildConfiguration)
+      --output $(Build.ArtifactStagingDirectory)
+      --no-build
     zipAfterPublish: true
 
+# 6. Salvar o artefato no Azure Artifacts
+#    O stage de CD irá baixar este artefato para fazer o deploy
 - task: PublishBuildArtifacts@1
-  displayName: '6. Salvar artefato no Azure DevOps'
+  displayName: '6. Salvar artefato no Azure Artifacts'
   inputs:
     pathToPublish: '$(Build.ArtifactStagingDirectory)'
     artifactName: 'drop'
     publishLocation: 'Container'
+
+# 7. Exibir resumo do build nos logs
+- script: |
+    echo "================================================"
+    echo " PedidosApi — Resumo do Build"
+    echo "================================================"
+    echo " Build número : $(Build.BuildNumber)"
+    echo " Branch/Tag   : $(Build.SourceBranchName)"
+    echo " Commit       : $(Build.SourceVersion)"
+    echo " Configuração : $(buildConfiguration)"
+    echo "================================================"
+  displayName: '7. Resumo do build'
