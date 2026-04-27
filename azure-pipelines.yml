@@ -10,7 +10,7 @@
 #    5. Publica o artefato (.zip) no Azure Artifacts
 #
 #  Triggers:
-#    - Push na branch master  → roda o CI completo
+#    - Push na branch main  → roda o CI completo
 #    - Push de tag v*.*.*     → roda o CI completo
 #                               (o CD usa esse artefato)
 # ============================================================
@@ -18,7 +18,7 @@
 trigger:
   branches:
     include:
-      - master
+      - main
   tags:
     include:
       - 'v*.*.*'
