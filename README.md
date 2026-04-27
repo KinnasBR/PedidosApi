@@ -1,7 +1,7 @@
 # PedidosApi
 
 API de pedidos desenvolvida com **.NET 10 Minimal API** para demonstrar na prática os conceitos de **Trunk-Based Development (TBD)**, **Feature Flags** e **Rollout Gradual** usando o pacote `Microsoft.FeatureManagement`.
-
+ 
 ---
 
 ## Índice
