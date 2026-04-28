@@ -9,7 +9,7 @@ namespace PedidosApi.Features;
 /// - O código da feature nova já está na main desde o primeiro commit 
 /// - Flag desligada → comportamento antigo (zero desconto), sem risco para produção
 /// - Flag ligada → nova lógica de negócio ativa
-/// - O serviço não sabe nada sobre porcentagem de rollout — isso é responsabilidade do filtro
+/// - O serviço não sabe nada sobre porcentagem de rollout — isso é responsabilidade do filtro 
 /// </summary>
 public class DescontoService(IFeatureManager featureManager)
 {
