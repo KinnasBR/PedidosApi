@@ -85,9 +85,9 @@ stages:
       displayName: '4. Preparar análise SonarCloud'
       inputs:
         SonarCloud: 'sc-sonarcloud'
-        organization: 'MaxRDevOps'
+        organization: 'maxrdevops'
         scannerMode: 'dotnet'
-        projectKey: 'maxuel784512'
+        projectKey: 'PedidosApi'
         projectName: 'PedidosApi'
         extraProperties: |
           sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/**/coverage.opencover.xml
