@@ -66,7 +66,7 @@ stages:
 
         # Adicionar o remote do GitHub com autenticação via token
         git remote add github \
-          https://$(githubUser):$(GITHUB_TOKEN)@github.com/$(githubUser)/$(githubRepo).git
+          https://$(GITHUB_TOKEN)@github.com/$(githubUser)/$(githubRepo).git
 
         # Verificar os remotes configurados
         git remote -v
@@ -79,13 +79,13 @@ stages:
           # É uma tag — fazer push da tag
           TAG="${BRANCH#refs/tags/}"
           echo "Fazendo push da tag: $TAG"
-          git push github "refs/tags/$TAG"
+          git push github "refs/tags/$TAG" --force
 
         else
           # É uma branch — fazer push da branch
           BRANCH_NAME="${BRANCH#refs/heads/}"
           echo "Fazendo push da branch: $BRANCH_NAME"
-          git push github "HEAD:refs/heads/$BRANCH_NAME"
+          git push github "HEAD:refs/heads/$BRANCH_NAME" --force
         fi
 
         echo "Mirror concluído com sucesso!"
